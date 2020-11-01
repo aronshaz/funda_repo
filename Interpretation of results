@@ -5,5 +5,38 @@ Aron Khan
 
 PostgreSQL
 
+For the first part I have chosen my favorite movie of all time: Interstellar. After succesfully writing the script, the script produced a list of 21 possible recommendations.
+Although I am not completely sure how the PSQL functions work, and even though the ranks of the recommendations were all >0.99, the results were unexpected, and not really good.
+When I look at the list, there are reocmmendations like Spongebob and Charlie and the Chocolate Factory: completely different then Interstellar. 
+The same was done for another favorite movie of mine: Flight. This yielded 7 results (which I did not consider very good recommendations). This csv file is not included however.
+However, line 15 produces good recommendations in my opinion. It searches for keywords which are included in the summary of other movies. This list consists of 3 very good recommendations.
+One of these, for example, is "2001: a space odyssey", which is a much better recommendation in my opinion.
+I would therefore prefer this method than the one suggested in the booklet. Due to time constraint I unfortunately did not manage to export these results to a seperate csv file. 
+
+For the recommendations based on actors I have chosen another favorite movie of mine: Inception, starring Leonardo DiCaprio. The same reasoning as hereabove can be applied. 
+Through the way explained in the booklet, after defining the rank as 0.4, it found 13 movies starring different actors from Inception. After defining the rank as 0.01, it did find 24 movies
+starring DiCaprio. I would therefore also recommend using line 14 in the script instead. This produces movies starring DiCaprio, which is essentially what we are trying to find!
+Note: this same logic can be applied to my first favorite movie Interstellar. However, DiCaprio is one of my favorite actors, hence why I chose this particular movie.
+
+For the last recommendations in this part of the booklet I have chosen the movie Flight. This is because I think that the way these functions work do not really make sense.
+I think the acquired recommendations based (in this case) on title do not make sense.
+If I would choose the first two mentioned movies, only those would be recommended since the title always corresponds with itself. Even while choosing a movie with a title such as flight,
+the system only produced two recommendations which probably would be very different from the movie flight (the rank is even placed at 0.001!)
+
+
+
 Python
+
+The comments in the Python code explain the way the script works. Here the results will be discussed. I have chosen the movie "Flight" as one of my favorite movies for this part.
+This is due to the high amount of review available for my other two favorite movies, and therefore limiting the computing power necessary to run the script. 
+However, I did run the code on Interstellar once (included), and it yielded about 1875 recommendations. Including in the top 50 of these is "Flight"! That is very interesting. 
+
+The script for "Flight" surprisingly also yields a total of about 1900 recommendations, which is a lot. In my opinion however, the way the recommendations are acquired is not very effective. 
+Since every movie rated higher by a random person, this can not always be a guarantee for a good recommendation. There is a lot of bias in this method. 
+Especially since the dataset is too big, and the opinions of other reviewers are very different, I think this way of recommending movies is not very effective.
+It was suprising that Flight came up in the recommendations of Interstellar though. Furthermore it can be concluded that the recommendations between the two methods are very different. 
+This is probably due to the size of the data set. 
+
+A better way of acquiring recommendations would be sentiment analsysis: where the general tone of text is analyzed and scored. I tried to code this in python but did not succeed unfortunately.
+I included the code in the ZIP file however. 
 
