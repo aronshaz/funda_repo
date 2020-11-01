@@ -1,21 +1,25 @@
-
 --CREATING RECOMMENDATIONS BASED ON STARRING ACTOR
-test=> CREATE TABLE IF NOT EXISTS movies (url text, title text, ReleaseDate text, Distributor text, Starring text, Summary text, Director text, Genre text, Rating text, Runtime text, Userscore text, Metascore text, scoreCounts text);
+--ALL PREVIOUS COMMENTS ARE APPLICABLE TO THIS SCRIPT. THE ONLY EXCEPTION IS THE RANKINGS ARE NOW BASED ON THE COMMON WORDS IN THE STARRING FIELDS. 
 
-test=> \copy movies FROM '/home/pi/RSL/moviesFromMetacritic.csv' delimiter ';' csv header
+CREATE TABLE movies2 (url text, title text, ReleaseDate text, Distributor text, Starring text, Summary text, Director text, Genre text, Rating text, Runtime text, Userscore text, Metascore text, scoreCounts text);
 
-test=> SELECT * FROM movies where url='inception';
-test=> ALTER TABLE movies ADD COLUMN IF NOT EXISTS lexemesStarring tsvector;
+\copy movies2 FROM '/home/pi/RSL/moviesFromMetacritic.csv' delimiter ';' csv header
 
-test=> UPDATE movies SET lexemesStarring = to_tsvector(Starring);
+--SELECT * FROM movies2 where url='inception';
 
-test=> SELECT url FROM movies WHERE lexemesStarring @@ to_tsquery('DiCaprio');
-test=> ALTER TABLE movies ADD COLUMN IF NOT EXISTS rank float4;
+ALTER TABLE movies2 ADD lexemesStarring tsvector;
 
-test=> UPDATE movies SET rank = ts_rank(lexemesStarring,plainto_tsquery((SELECT Starring FROM movies WHERE url='inception')));
+UPDATE movies2 SET lexemesStarring = to_tsvector(Starring);
 
-test=> CREATE TABLE IF NOT EXISTS recommendationsBasedOnStarringActor AS SELECT url, rank FROM movies WHERE rank > 0.2 ORDER BY rank DESC LIMIT 50;
+--SELECT url FROM movies2 WHERE lexemesStarring @@ to_tsquery('DiCaprio');
 
-test=> \copy (SELECT * FROM recommendationsBasedOnStarringActor) to '/home/pi/RSL/top50recommendationsStarring.csv' WITH csv;
+ALTER TABLE movies2 ADD rank float4;
 
+UPDATE movies2 SET rank = ts_rank(lexemesStarring,plainto_tsquery((SELECT Starring FROM movies2 WHERE url='inception')));
 
+CREATE TABLE recommendationsBasedOnStarringActor AS SELECT url, rank FROM movies2 WHERE rank > 0.01 ORDER BY rank DESC LIMIT 50;
+
+\copy (SELECT * FROM recommendationsBasedOnStarringActor) to '/home/pi/RSL/top50recommendationsStarring.csv' WITH csv;
+
+DROP TABLE movies2;
+DROP TABLE recommendationsBasedOnStarringActor;
